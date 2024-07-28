@@ -48,7 +48,7 @@ const BidComponant = ({ Name, Description, StartTime, EndTime, Status, Cost }) =
               <tr>
                 <td colSpan="2" className="table-data">
                   <button className="btn w-btn" onClick={handleBidNow}>
-                    Bid Now 2
+                    Bid Now 
                   </button>
                 </td>
               </tr>

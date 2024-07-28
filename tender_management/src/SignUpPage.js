@@ -16,26 +16,21 @@ const SignUpPage = () => {
       [name]: value,
     }));
   };
-  const onSubmitFun = (event) => {
-      
-    event.preventDefault();
-
-    const serverUrl = "http://localhost:8070/register";
-  
-    axios
-      .post(serverUrl, userData)
-      .then((response) => {
-       
-        console.log(response.data);
-        alert("Sign up Successfully!");
-        navigate("/");
-      })
-      .catch((error) => {
-        alert(error);
-        console.error("Error adding the task form:", error);
-      });
-   
+  const onSubmitFun = async(event) => {
+    try{
+      event.preventDefault();
+      const serverUrl = "http://localhost:8070/register";
+      const responce = await axios.post(serverUrl, userData);
+      console.log(responce);
+      alert(responce.data.msg);
+      navigate("/");
+    }
+    catch(error){
+      alert(error);
+      console.error("Error adding the task form:", error);
+    }
   };
+  
   return (
     <React.Fragment>
       <div className="containerform">

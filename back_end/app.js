@@ -106,33 +106,33 @@ app.use(
     timestamps: true 
   });
   
-  bidSchema.pre('save', async function(next) {
-    const now = new Date();
-    const tender = await Tender.findById(this.tender);
+  // bidSchema.pre('save', async function(next) {
+  //   const now = new Date();
+  //   const tender = await Tender.findById(this.tender);
   
-    if (!tender) {
-      throw new Error('Tender not found');
-    }
+  //   if (!tender) {
+  //     throw new Error('Tender not found');
+  //   }
+  //  console.log(this); ->  return a object containing bidScema
+  //   const fiveMinutesBeforeEnd = new Date(tender.endTime.getTime() - 5 * 60 * 1000);
   
-    const fiveMinutesBeforeEnd = new Date(tender.endTime.getTime() - 5 * 60 * 1000);
-  
-    if (now >= fiveMinutesBeforeEnd && now < tender.endTime) {
-      this.action = 'BID Now';
-      this.status = 'not assigned';
-    } else if (now >= tender.endTime) {
-      this.action = 'expired';
-      this.status = 'assigned';
-    }
-    next();
-  });
+  //   if (now >= fiveMinutesBeforeEnd && now < tender.endTime) {
+  //     this.action = 'BID Now';
+  //     this.status = 'not assigned';
+  //   } else if (now >= tender.endTime) {
+  //     this.action = 'expired';
+  //     this.status = 'assigned';
+  //   }
+  //   next();
+  // });
   
   const Bid = new mongoose.model('Bid', bidSchema);
   
   const Registration = new mongoose.model("Student_Registration", userSchema);
   const Tender = new mongoose.model("Tender", tenderSchema);
   const adminPannel = new mongoose.model("admin-pannel", AdminSchema);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
 
 app.post("/register", async (req, res) => {
     try {
@@ -148,11 +148,13 @@ app.post("/register", async (req, res) => {
   
         const result = await first_document.save(); // To save the data into database
         console.log(result);
-        res.status(201).json({ success: true });
+        res.status(201).json({success: true, "msg": "sign up successfully"});
+        
       } else {
-        res.send("Passwords are not matching");
+        res.status(200).json({success: true, "msg": "Passwords are not matching"});
       }
     } catch (err) {
+      console.log(err)
       res.status(400).send(err);
     }
   });
@@ -262,8 +264,7 @@ app.post("/register", async (req, res) => {
   app.get('/tenders', async (req, res) => {
     try {
       const result = await Tender.find({}); //   .sort({ Ranking: 1 });  is used to sort data on the basis of ranking
-      console.log(result);
-      res.send(result);
+      res.json(result);  // res.send(json)  bhi likh skte h baat braber h 
     } catch (err) {
       res.status(400).send(err);
     }

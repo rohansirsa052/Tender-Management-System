@@ -17,7 +17,7 @@ const TendersList = ({ TenderList, Quotation, pannelName }) => {
       alert("Quote submitted successfully");
     }
   };
-  console.log(TenderList);
+
 
   return (
     <div className="container-fluid mt-5">

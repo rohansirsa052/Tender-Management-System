@@ -15,27 +15,17 @@ const SignInPage = () => {
           [name]: value,
         }));
       };
-      const handleClick = (e, url, redirectPath) => {
-        e.preventDefault();
-        axios
-          .post(url, loginData)
-          .then((response) => {
-            const userName = response.data.name;
-            localStorage.setItem("userName", userName);
-            
-            const storedUserName = localStorage.getItem("userName");
-            if (storedUserName) {
-              console.log("Username set in local storage:", storedUserName);
-            } else {
-              console.log("Failed to set username in local storage");
-            }
-            alert("Login successful");
-            window.location.href = redirectPath;
-          })
-          .catch((error) => {
+      const handleClick = async(e, url, redirectPath) => {
+          try{
+              const response= await axios.post(url, loginData);
+              const userName = response.data.name;
+              localStorage.setItem("userName", userName);
+              window.location.href = redirectPath;
+          }
+          catch (error){
             alert("Error: " + error.response.data || error.message);
             console.error("Error logging in:", error);
-          });
+          }
       };
     
       const handleClick1 = (e) => handleClick(e, "http://localhost:8070/login", "./welcome");

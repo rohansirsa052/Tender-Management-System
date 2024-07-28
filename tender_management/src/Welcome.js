@@ -7,7 +7,7 @@ import "./App.css";
 
 const Welcome = () => {
   const [userName, setUserName] = useState('');
-  const [taskList, setTaskList] = useState([]);
+  const [tenderList, settenderList] = useState([]);
   const [showTenders, setShowTenders] = useState(false); // New state for controlling visibility
   const location= "welcome";
   const quotation= "Add a Quotation"
@@ -17,19 +17,20 @@ const Welcome = () => {
         setUserName(storedUserName);
       }
     }, []);
-    const showAllTender = () => {
+    const showAllTender = async() => {
+     try{
       const serverUrl = "http://localhost:8070/tenders";
-      axios
-      .get(serverUrl)
-      .then((response) => {
-        // console.log(response.data);
-        setTaskList(response.data);
-        setShowTenders(true); // Set the state to show tenders
-      })
-      .catch((error) => {
-        console.error("Error receiving data:", error);
-      });
+       const result=  await axios.get(serverUrl);
+       const response= result.data;
+       settenderList(response);
+       setShowTenders(true); // Set the state to show tenders
+     }
+     catch(err){
+      console.log("Error receiving data:", err)
+     }
   }
+  
+ 
   return (
     <React.Fragment>
       <header>
@@ -50,7 +51,7 @@ const Welcome = () => {
           </div>
         </div>
       </header>
-      {showTenders && <TendersList TenderList={taskList} Quotation={quotation} pannelName={"User Pannel"} />}
+      {showTenders && <TendersList TenderList={tenderList} Quotation={quotation} pannelName={"User Pannel"} />}
     </React.Fragment>
   );
 }
