@@ -1,7 +1,8 @@
 import React , {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 const SignUpPage = () => {
+  const navigate = useNavigate(); 
   let [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -18,7 +19,7 @@ const SignUpPage = () => {
   const onSubmitFun = (event) => {
       
     event.preventDefault();
-    console.log("go");
+
     const serverUrl = "http://localhost:8070/register";
   
     axios
@@ -26,7 +27,8 @@ const SignUpPage = () => {
       .then((response) => {
        
         console.log(response.data);
-        alert("Task Added Successfully!");
+        alert("Sign up Successfully!");
+        navigate("/");
       })
       .catch((error) => {
         alert(error);

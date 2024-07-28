@@ -148,7 +148,7 @@ app.post("/register", async (req, res) => {
   
         const result = await first_document.save(); // To save the data into database
         console.log(result);
-        // res.status(201).render("index");
+        res.status(201).json({ success: true });
       } else {
         res.send("Passwords are not matching");
       }
@@ -328,3 +328,5 @@ app.post("/register", async (req, res) => {
   });
  const port = process.env.PORT || 8070;
 app.listen(port, () => console.log(`Server running at ${port}`));
+
+

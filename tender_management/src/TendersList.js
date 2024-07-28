@@ -14,7 +14,6 @@ const TendersList = ({ TenderList, Quotation, pannelName }) => {
   const handleClick = () => {
     const quote = prompt("Enter the quote");
     if (quote !== null) {
-      // Do something with the quote (e.g., console.log(quote), store it in a variable)
       alert("Quote submitted successfully");
     }
   };
