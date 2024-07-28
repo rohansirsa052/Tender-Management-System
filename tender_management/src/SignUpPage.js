@@ -1,6 +1,8 @@
 import React , {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Swal from 'sweetalert2';
+
 const SignUpPage = () => {
   const navigate = useNavigate(); 
   let [userData, setUserData] = useState({
@@ -21,13 +23,31 @@ const SignUpPage = () => {
       event.preventDefault();
       const serverUrl = "http://localhost:8070/register";
       const responce = await axios.post(serverUrl, userData);
-      console.log(responce);
-      alert(responce.data.msg);
+      if(responce.status==201){
+      Swal.fire({
+        icon: 'success',
+        title: 'Good Job',
+        text: responce.data.msg,
+
+    })
       navigate("/");
     }
+    else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops..',
+        text: responce.data.msg,
+    })
+    }
+
+    }
     catch(error){
-      alert(error);
-      console.error("Error adding the task form:", error);
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops..',
+        text: error.response?.data?.message || 'Something went wrong!',
+    })
     }
   };
   

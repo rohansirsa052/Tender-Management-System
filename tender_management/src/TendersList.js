@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import "./TenderList.css";
 
 const TendersList = ({ TenderList, Quotation, pannelName }) => {
@@ -11,13 +12,33 @@ const TendersList = ({ TenderList, Quotation, pannelName }) => {
       setUserPannel(false);
     }
   }, [pannelName]);
-  const handleClick = () => {
-    const quote = prompt("Enter the quote");
-    if (quote !== null) {
-      alert("Quote submitted successfully");
+
+  const handleClick = async () => {
+    const { value: quote } = await Swal.fire({
+      title: 'Enter your quote',
+      input: 'textarea',
+      inputPlaceholder: 'Type your quote here...',
+      inputAttributes: {
+        'aria-label': 'Type your quote here'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      cancelButtonText: 'Cancel',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to write something!';
+        }
+      }
+    });
+
+    if (quote) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Quote Submitted',
+        text: 'Your quote has been submitted successfully!'
+      });
     }
   };
-
 
   return (
     <div className="container-fluid mt-5">
@@ -44,7 +65,7 @@ const TendersList = ({ TenderList, Quotation, pannelName }) => {
                 <td>{tender.startTime}</td>
                 <td>{tender.endTime}</td>
                 <td>{tender.bufferTime}</td>
-                {userPannel && <td> <button className='btn w-btn' onClick={handleClick} >  {Quotation} </button></td>}
+                {userPannel && <td> <button className='btn w-btn' onClick={handleClick}>{Quotation}</button></td>}
               </tr>
             ))}
           </tbody>
